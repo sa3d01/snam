@@ -1,0 +1,199 @@
+    /* ================== header================== */
+    
+    body {
+        font-family: 'Tajawal', sans-serif;
+        background-image: url(../images/background.png);
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: cover;
+        overflow-x: hidden;
+    }
+    
+    @font-face {
+        font-family: Tajawal;
+        src: url(../fonts/Tajawal-Regular.ttf);
+        /* font-weight: bold; */
+    }
+    
+    h3 {
+        font-weight: 700;
+    }
+    
+    .rtl {
+        direction: rtl;
+    }
+    
+    .ltr {
+        direction: ltr
+    }
+    
+    ul {
+        padding: 0;
+    }
+    
+    ul li {
+        list-style-type: none;
+    }
+    
+    .default-bg {
+        background: #000547;
+    }
+    
+    .second-bg {
+        background: #FFF9F6;
+    }
+    
+    .p-relative {
+        position: relative;
+    }
+    
+    .w-700 {
+        font-weight: 700;
+    }
+    
+    a:hover {
+        text-decoration: none;
+    }
+    /* ==============================
+    header
+    ================================ */
+    
+    .navbar-nav .nav-link {
+        color: #fff;
+        vertical-align: middle;
+        transform: translateZ(0);
+        box-shadow: 0 0 1px rgba(0, 0, 0, 0);
+        backface-visibility: hidden;
+        -moz-osx-font-smoothing: grayscale;
+        transition-duration: 0.3s;
+        transition-property: transform;
+        transition-timing-function: ease-out;
+    }
+    
+    .nav-item.active .nav-link:before,
+    .nav-item .nav-link:hover:before {
+        content: "";
+        background: #fff;
+        width: 8px;
+        height: 8px;
+        position: absolute;
+        bottom: -5px;
+        border-radius: 50px;
+        right: 45%;
+    }
+    
+    .navbar-nav .nav-link:hover {
+        font-weight: 700;
+        transform: translateY(-8px);
+    }
+    
+    header {
+        background-image: url(../images/home-bg.png);
+        background-position: left;
+        background-repeat: no-repeat;
+        background-size: 50% 100%;
+        height: 100vh;
+    }
+    
+    header .btn-download,
+    header .btn-download:hover {
+        background-image: linear-gradient(to right, #0926B8, #000547);
+        color: #fff;
+        font-weight: 700;
+        border-radius: 12px;
+    }
+    
+    .fa-bars {
+        color: #fff;
+    }
+    
+    .store img {
+        width: 125px;
+        height: 45px;
+    }
+    
+    .download-block .container {
+        background: #CDD2ED;
+        margin-right: 0;
+        border-top-left-radius: 50px;
+        border-bottom-left-radius: 50px;
+    }
+    
+    .download-block .mockup {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+    }
+    
+    footer ul li {
+        float: right;
+        margin-right: 5px;
+        margin-left: 5px;
+        background: #fff;
+        width: 22px;
+        height: 22px;
+        border-radius: 5px;
+        text-align: center;
+    }
+    
+    footer ul li a {
+        color: #000547;
+    }
+    /* ===============================
+media
+================================= */
+    
+    @media(max-width: 768px) {
+        .navbar-toggler:hover,
+        .navbar-toggler:focus {
+            text-decoration: none;
+            border: none;
+            outline: none;
+        }
+        footer ul {
+            display: inline-block;
+            margin: auto;
+            text-align: center;
+            margin-bottom: 7px;
+        }
+        footer .text-left {
+            text-align: center !important;
+        }
+        #intro {
+            margin-top: 25vh;
+        }
+        header {
+            background-image: url(../images/home-bg.png);
+            background-position: left top;
+            background-repeat: no-repeat;
+            background-size: contain;
+            height: 100vh;
+        }
+        .download-block .mockup {
+            display: none;
+        }
+        .navbar-nav {
+            background: #061b927d;
+        }
+        .nav-item.active .nav-link:before,
+        .nav-item .nav-link:hover:before {
+            content: "";
+            background: #fff;
+            width: 8px;
+            height: 8px;
+            position: absolute;
+            bottom: -5px;
+            border-radius: 50px;
+            right: 0;
+            top: 15px;
+        }
+        .navbar-nav .nav-item.active .nav-link {
+            padding-right: 15px;
+        }
+        header .btn-download {
+            display: none;
+        }
+        .store img {
+            margin-bottom: 10px;
+        }
+    }
