@@ -85,7 +85,8 @@ class NotificationController extends MasterController
         ];
         $push->setMessage($msg)
             ->setDevicesToken($devices)
-            ->send();
+            ->send()
+            ->getFeedback();
         return redirect()->route('notification.collective_notice')->with('notify', 'تم الارسال بنجاح');
     }
 }

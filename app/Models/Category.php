@@ -60,10 +60,23 @@ class Category extends Model
         foreach ($this->index_fields as $index_field){
             $this->$index_field ? $arr[$index_field] = $this->$index_field : $arr[$index_field] ='';
         }
+        if ($this->parent_id==null){
+            $arr['sub_categories']=$this->subs($this);
+        }elseif($this->parent->parent_id==null){
+            $arr['children']=$this->subs($this);
+        } 
        // $child=$this->where('parent_id',$this->id)->first();
       //  $arr['have_child']= $child ? true : false ;
 
         return $arr;
+    }
+    public function subs($category)
+    {
+        $sub_categories=[];
+        foreach($category->childs as $child){
+            $sub_categories[]=$child->static_model();
+        }
+         return $sub_categories;
     }
     public function childs(){
         return $this->hasMany(Category::class, 'parent_id', 'id');

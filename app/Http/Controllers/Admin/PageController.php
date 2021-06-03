@@ -2,14 +2,11 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Controllers\Admin\MasterController;
 use App\Models\Page;
-use App\Models\Language;
-use App\Models\PageDescription;
-use App\Models\SubPage;
-use Illuminate\Http\Request;
-use Analytics;
 use Auth;
+use Illuminate\Http\Request;
+use Illuminate\Support\Str;
+
 class PageController extends MasterController
 {
     public function __construct(Page $model)
@@ -20,58 +17,33 @@ class PageController extends MasterController
         $this->single_module_name  = 'صفحة';
         parent::__construct();
     }
-
-    public function validation_func()
+    public function editPage($name)
     {
-        $languages=Language::all();
-        $therulesarray = [];
-        foreach ( $languages as $language) {
-            $therulesarray['name_'.$language->label] = 'required';
-            $therulesarray['description_'.$language->label] = 'required';
-        }
-        return $therulesarray;
+        $page=Page::where('name',$name)->first();
+        return View('admin.page.edit',compact('page'));
     }
-    public function store(Request $request) {
-        $this->validate($request, $this->validation_func());
-        $page=new Page();
-        $page->add_by=request('add_by');
-        $page->status=request('status');
-        $page->save();
-        $languages=Language::all();
-        foreach ($languages as $language){
-            $page_description=new PageDescription();
-            $page_description->name=request('name_'.$language->label);
-            $page_description->description='<center>'.request('description_'.$language->label).'</center>';
-            $page_description->language_id=$language->id;
-            $page_description->page_id=$page->id;
-            $page_description->save();
-        }
-        return redirect('admin/'.$this->route.'')->with('created', 'تمت الاضافة بنجاح');
-    }
-
     public function update($id, Request $request) {
-        $this->validate($request, $this->validation_func());
         $page=$this->model->find($id);
-        $page->status=request('status');
-        $page->update();
-        $languages=Language::all();
-        foreach ($languages as $language){
-            $page_description=PageDescription::where(['page_id'=>$id,'language_id'=>$language->id])->first();
-            if(isset($page_description)){
-                $page_description->name=request('name_'.$language->label);
-                $page_description->description='<center>'.request('description_'.$language->label).'</center>';
-                $page_description->update();
-            }else{
-                $page_description=new PageDescription();
-                $page_description->name=request('name_'.$language->label);
-                $page_description->description='<center>'.request('description_'.$language->label).'</center>';
-                $page_description->language_id=$language->id;
-                $page_description->page_id=$page->id;
-                $page_description->save();
+        $data=$request->all();
+        if ($request->images){
+            foreach ($request->images as $image){
+                if (is_file($image)) {
+                    if ($image->getSize() > 4194304){
+                        return redirect()->back()->withErrors(['حجم الصورة كبير جدا..']);
+                    }
+                    $filename = Str::random(10) . '.' . $image->getClientOriginalExtension();
+                    $image->move('images/page/', $filename);
+                    $local_name=asset('images/page/').'/'.$filename;
+                }else {
+                    $local_name = $image;
+                }
+                $images[]=$local_name;
             }
-
+            $data['images'] = $images;
         }
-        return redirect('admin/'.$this->route.'')->with('updated','تم التعديل بنجاح');
+
+        $page->update($data);
+        return redirect('admin/page/'.$page->name)->with('updated','تم التعديل بنجاح');
     }
 
 

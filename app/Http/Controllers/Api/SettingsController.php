@@ -2,47 +2,22 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Models\Answer;
-use App\Models\Banner;
-use App\Models\BannerDescription;
-use App\Models\Category;
-use App\Models\CategoryDescription;
-use App\Models\Language;
-use App\Models\Notification;
-use App\Models\Offer;
-use App\Models\Post;
-use App\Models\Setting;
-use App\Models\Rating;
-use App\Models\Shop;
-use App\Models\ShopDescription;
-use App\Models\ShopImage;
-use App\Models\Social;
-use App\Models\SubCategory;
-use Carbon\Carbon;
-use Illuminate\Support\Facades\Auth;
-use Validator;
-use App\User;
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use Edujugon\PushNotification\PushNotification;
+use App\Models\Page;
+use App\Models\Setting;
 
 class SettingsController extends Controller
 {
     public function index()
     {
         $row = Setting::first();
-//        $arr['licence']=$row->licence;
-        $arr['about']=$row->about;
-//        $arr['block']=$row->block;
-//        $arr['zakah']=$row->zakah;
-//        $arr['quran']=$row->quran;
-//        $arr['hadeth']=$row->hadeth;
-//        $arr['talk_about']=$row->talk_about;
-//        $arr['festival']=$row->festival;
 
+        $arr['terms'] = Page::where('name','licence')->value('content');
+        $arr['about'] = Page::where('name','about')->value('content');
+        $arr['blocked_ads'] = Page::where('name','block')->value('content');
         $arr['whatsapp']=$row->mobile;
         $arr['contact']=$row->contact;
-        $arr['percent']=$row->percent;
+        $arr['percent']=Page::where('name','percent')->value('content');
         $arr['percent_ratio']=$row->percent_ratio;
         $arr['twitter']=$row->twitter;
         $arr['instagram']=$row->instagram;
@@ -51,9 +26,46 @@ class SettingsController extends Controller
         $arr['youtube']=$row->youtube;
         return response()->json(['status' => 200, 'data' => $arr]);
     }
-    public function page($name){
-        $row = Setting::first();
-        $content=$row->$name;
-        return view('web.pages.'.$name,compact('content'));
+
+    public function page($name)
+    {
+        $page=Page::where('name',$name)->first();
+        if ($name == 'healing') {
+            $arr['name'] = 'the healing name';
+            $arr['price'] = 0;
+            return response()->json(['status' => 200, 'data' => $arr]);
+        } elseif ($name == 'zakah' || $name == 'talk_about' || $name == 'hadeth' || $name == 'quran') {
+            if (!$page){
+                $arr['title'] = '';
+                $arr['note'] = '';
+                $arr['images'] = [];
+            }else{
+                $arr['title'] = $page->title;
+                $arr['note'] = $page->content;
+                $images=[];
+                if ($page->images!=null){
+                    $images=json_decode($page->images);
+                }
+                $arr['images'] =$images;
+            }
+            return response()->json(['status' => 200, 'data' => $arr]);
+        } else {
+            if (!$page){
+                $arr['title'] = '';
+                $arr['note'] = '';
+                $arr['image'] ='';
+            }else{
+                $arr['title'] = $page->title;
+                $arr['note'] = $page->content;
+                $image=null;
+                if ($page->images!=null){
+                    $images=json_decode($page->images);
+                    $image=$images[0];
+                }
+                $arr['image'] =$image;
+            }
+            $data[] = $arr;
+            return response()->json(['status' => 200, 'data' => $data]);
+        }
     }
 }

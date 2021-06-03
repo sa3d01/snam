@@ -3,21 +3,20 @@
 namespace App\Http\Controllers\Api;
 
 use App\Models\Ad;
-use App\Models\Bank;
+use App\Models\Category;
+use App\Models\Chat;
 use App\Models\City;
 use App\Models\Comment;
 use App\Models\Favourite;
 use App\Models\Notification;
 use App\Models\Rating;
-use App\Models\Slider;
-use App\Models\Chat;
 use App\Models\Report;
+use App\Models\Slider;
 use App\User;
 use Edujugon\PushNotification\PushNotification;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
-use Validator;
 use Illuminate\Support\Str;
+use Validator;
 
 class AdController extends MasterController
 {
@@ -58,8 +57,8 @@ class AdController extends MasterController
         }
         $data=[];
         foreach ($rows as $row){
-            $arr=$row->static_model();
-            $arr['district']=$row->city? $row->city->district->static_model() : null;
+            $arr = $row->simple_static_model();
+            $arr['district'] = $row->city ? $row->city->district->static_model() : null;
             $arr['is_favourite']=false;
             if($request->header('apiToken')){
                 $check_token=$this->check_apiToken($request->header('apiToken'));
@@ -105,7 +104,7 @@ class AdController extends MasterController
         $comment->comment=$request['comment'];
         $comment->save();
 
-        $title = $user->username.' ترك تعليقا على اعﻻنك';
+        $title = $user->username.' ترك تعليقا على اعلانك';
         $status='comment';
         $ad=Ad::find($request['ad_id']);
         $ad->user->device_type=='IOS'? $not=array('title'=>$title, 'sound' => 'default') : $not=null;
@@ -197,28 +196,12 @@ class AdController extends MasterController
         $split = explode("sa3d01",$request->header('apiToken'));
         $user=User::where('apiToken',$split['1'])->first();
         //auth
+        $category=Category::find($request['category_id']);
+        if (!$category){
+            return response()->json(['status' => 400, 'msg' => 'يوجد مشكلة فى هذا التصنيف جاري معالجتها حاليا ..']);
+        }
         $all=$request->all();
         $all['user_id']=$user->id;
-        // $images=[];
-        // foreach ($request->images as $image){
-        //         $destinationPath = 'images/ads/';
-        //         $filename = $image->getClientOriginalName();
-        //         $image->move($destinationPath, $filename);
-        //         $images[]=$filename;
-        // }
-        // $all['images']=$images;
-        // $videos=[];
-        // if($request->videos){
-        //     foreach ($request->videos as $video){
-        //         $destinationPath = 'images/ads/';
-        //         $filename = $video->getClientOriginalName();
-        //         $video->move($destinationPath, $filename);
-        //         $videos[]=$filename;
-        //     }
-        //     $all['videos']=$videos;
-        // }
-
-
         $row=$this->model->create($all);
         $row->refresh();
         $arr=$row->static_model();
@@ -314,33 +297,29 @@ class AdController extends MasterController
             $favourite->ad_id=$request['ad_id'];
             $favourite->save();
         }
-//        $row=$this->model->find($request['ad_id']);
-//        $arr=$row->static_model();
-//        $fav=Favourite::where(['ad_id'=>$row->id,'user_id'=>$user->id])->first();
-//        $arr['is_favourite']=$fav?true:false;
-
         $favourite=Favourite::where('user_id',$user->id)->pluck('ad_id');
-        $ads=Ad::whereIn('id',$favourite)->get();
-        $data=[];
-        foreach ($ads as $ad){
-            $arr=$ad->static_model();
-            $fav=Favourite::where(['ad_id'=>$ad->id,'user_id'=>$user->id])->first();
-            $arr['is_favourite']=$fav?true:false;
-            $data[]=$arr;
+        $ads = Ad::whereIn('id', $favourite)->get();
+        $data = [];
+        foreach ($ads as $ad) {
+            $arr = $ad->static_model();
+            $fav = Favourite::where(['ad_id' => $ad->id, 'user_id' => $user->id])->first();
+            $arr['is_favourite'] = $fav ? true : false;
+            $data[] = $arr;
         }
-        return response()->json(['status' => 200,'data'=>$data]);
+        return response()->json(['status' => 200, 'data' => $data]);
     }
-     public function add_report(Request $request)
+
+    public function add_report(Request $request)
     {
         //auth
-        $check_token=$this->check_apiToken($request->header('apiToken'));
-        if($check_token){
+        $check_token = $this->check_apiToken($request->header('apiToken'));
+        if ($check_token) {
             return $check_token;
         }
-        $split = explode("sa3d01",$request->header('apiToken'));
-        $user=User::where('apiToken',$split['1'])->first();
+        $split = explode("sa3d01", $request->header('apiToken'));
+        $user = User::where('apiToken', $split['1'])->first();
         //auth
-        $report=Report::where('ad_id',$request['ad_id'])->first();
+        $report = Report::where('ad_id', $request['ad_id'])->first();
         if($report){
             return response()->json(['status' => 400,'msg'=>'تم التبليغ من قبل']);
         }else{
@@ -366,7 +345,6 @@ class AdController extends MasterController
         $split = explode("sa3d01",$request->header('apiToken'));
         $user=User::where('apiToken',$split['1'])->first();
         //auth
-
         $favourite=Favourite::where('user_id',$user->id)->pluck('ad_id');
         $ads=Ad::whereIn('id',$favourite)->get();
         $data=[];
@@ -426,5 +404,4 @@ class AdController extends MasterController
         $this->model->find($id)->delete();
         return response()->json(['status' => 200]);
     }
-
 }

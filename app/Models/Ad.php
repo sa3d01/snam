@@ -14,7 +14,8 @@ class Ad extends Model
         'videos' => 'array',
     ];
     protected $fillable = ['title','note','images','status','vip','mobile','message','live_time','user_id','city_id','category_id','price','videos','lat','lng'];
-    protected $index_fields        = ['id','title','note','images','videos','lat','lng','status','user_id','city_id','category_id'];
+    protected $index_fields = ['id','title','note','images','videos','lat','lng','status','user_id','city_id'];
+    protected $simple_index_fields = ['id','title','images','status','city_id'];
     public function static_model()
     {
         foreach ($this->index_fields as $index_field){
@@ -30,24 +31,8 @@ class Ad extends Model
                 $this->$index_field ? $arr[$index_field] = $this->$index_field : $arr[$index_field] =null;
             }
         }
-        // $images=[];
-        // foreach ($this->images as $image){
-        //     $images[]=asset('images/ads/').'/'.$image;
-        // }
-        // $arr['images']=$images;
-
-        // $videos=[];
-        // if($this->videos!=null){
-        //   foreach ($this->videos as $video){
-        //         $videos[]=asset('images/ads/').'/'.$video;
-        //     }
-        // }
-
-        // $arr['videos']=$videos;
-
         $arr['url']=\URL::to('ad/'.$this->id);
         $arr['district']=$this->city? $this->city->district->static_model() : null;
-
         $arr['published']=$this->published();
         $comments=Comment::where('ad_id',$this->id)->get();
         $comments_array=[];
@@ -55,7 +40,40 @@ class Ad extends Model
             $comments_array[]=$comment->static_model();
         }
         $arr['comments'] = $comments_array;
-        $arr['parent_category'] = $this->category->parent ? $this->category->parent->static_model() : $this->category->static_model();
+
+        try {
+            $arr['parent_category'] = $this->category->parent->parent ? $this->category->parent->parent->static_model() : $this->category->parent->static_model();//grand
+            $arr['category'] = $this->category->parent ? $this->category->parent->static_model() : $this->category->static_model();//grand-child
+            $arr['child_category'] = $this->category ? $this->category->static_model() : "";//child-child
+        }catch (\Exception $e){
+            $arr['parent_category'] =  "" ;//grand
+            if ($this->category->parent){
+                $arr['category'] = $this->category->parent->static_model() ;//grand-child
+            }else{
+                $arr['category'] =  "";//grand-child
+            }
+            $arr['child_category'] = $this->category ? $this->category->static_model() : "";//child-child
+        }
+
+        return $arr;
+    }
+    public function simple_static_model()
+    {
+        foreach ($this->simple_index_fields as $index_field){
+            if(substr($index_field, "-3")=='_id'){
+                $related_model=substr_replace($index_field, "", -3);
+                if($this->$related_model !=null){
+                    $model=$this->$related_model->static_model();
+                }else{
+                    $model=null;
+                }
+                $this->$index_field ? $arr[$related_model] = $model : $arr[$related_model] =null;
+            }elseif (substr($index_field, "-3")!='_id'){
+                $this->$index_field ? $arr[$index_field] = $this->$index_field : $arr[$index_field] =null;
+            }
+        }
+        $arr['district']=$this->city? $this->city->district->static_model() : null;
+        $arr['published']=$this->published();
         return $arr;
     }
     public function user()

@@ -40,11 +40,11 @@ class CategoryController extends MasterController
             //     }
             // }
             // $arr['ads_count']=$ads_count;
-            $sub_categories=[];
-            foreach($row->childs as $child){
-                $sub_categories[]=$child->static_model();
-            }
-            $arr['sub_categories']=$sub_categories;
+//            $sub_categories=[];
+//            foreach($row->childs as $child){
+//                $sub_categories[]=$child->static_model();
+//            }
+//            $arr['sub_categories']=$row->subs($row);
             $data[]=$arr;
         }
 //        $ads=Ad::latest()->take(10)->get();
