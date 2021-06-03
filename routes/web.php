@@ -76,7 +76,7 @@ Route::group(['prefix'=>'/admin','namespace'=>'Admin'],function() {
 
     Route::resource('category', 'CategoryController');
     Route::post('category/activate/{id}', 'CategoryController@activate')->name('active_category');
-
+    Route::get('get_category_childs/{id}', 'CategoryController@get_category_childs');
     Route::resource('slider', 'SliderController');
 
     Route::resource('contact', 'ContactController');
@@ -88,5 +88,8 @@ Route::group(['prefix'=>'/admin','namespace'=>'Admin'],function() {
     Route::resource('bank', 'BankController');
     Route::post('bank/activate/{id}', 'BankController@activate')->name('active_bank');
     Route::resource('ad', 'AdController');
+
+    Route::get('page/{name}', 'PageController@editPage')->name('edit_page');
+    Route::post('page/{name}', 'PageController@update')->name('page.update');
 
 });
