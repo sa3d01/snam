@@ -10,7 +10,6 @@
 @section('content')
     <div class="content">
         <div class="container">
-
             <div class="col-lg-12">
 
                 <div class="row">
@@ -25,86 +24,86 @@
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="row">
-                                    <div>
-                                        <label for="title">الشروط والاحكام</label>
-                                        {!! Form::textarea('licence', $row->licence , ['class'=>'form-control summernote']) !!}
-                                        @if ($errors->has('licence'))
-                                            <small class="text-danger">{{ $errors->first('licence') }}</small>
-                                        @endif
-                                    </div>
-                                    <hr>
-                                    <div>
-                                        <label for="title">من نحن</label>
-                                        {!! Form::textarea('about', $row->about , ['class'=>'form-control']) !!}
-                                        @if ($errors->has('about'))
-                                            <small class="text-danger">{{ $errors->first('about') }}</small>
-                                        @endif
-                                    </div>
-                                    <hr>
-                                    <div>
-                                        <label for="title"> السلع الممنوعة</label>
-                                        {!! Form::textarea('block', $row->block , ['class'=>'form-control summernote']) !!}
-                                        @if ($errors->has('block'))
-                                            <small class="text-danger">{{ $errors->first('block') }}</small>
-                                        @endif
-                                    </div>
-                                    <hr>
-                                    <div>
-                                        <label for="title">عمولة التطبيق</label>
-                                        {!! Form::textarea('percent', $row->percent , ['class'=>'form-control summernote']) !!}
-                                        @if ($errors->has('percent'))
-                                            <small class="text-danger">{{ $errors->first('percent') }}</small>
-                                        @endif
-                                    </div>
-                                    <hr>
-                                    <div>
-                                        <label for="title">الابل فى القرآن</label>
-                                        {!! Form::textarea('quran', $row->quran , ['class'=>'form-control summernote']) !!}
-                                        @if ($errors->has('quran'))
-                                            <small class="text-danger">{{ $errors->first('quran') }}</small>
-                                        @endif
-                                    </div>
-                                    <hr>
-                                    <div>
-                                        <label for="title">الابل فى الحديث</label>
-                                        {!! Form::textarea('hadeth', $row->hadeth , ['class'=>'form-control summernote']) !!}
-                                        @if ($errors->has('hadeth'))
-                                            <small class="text-danger">{{ $errors->first('hadeth') }}</small>
-                                        @endif
-                                    </div>
-                                    <hr>
-                                    <div>
-                                        <label for="title">قيل فى الإبل</label>
-                                        {!! Form::textarea('talk_about', $row->talk_about , ['class'=>'form-control summernote']) !!}
-                                        @if ($errors->has('talk_about'))
-                                            <small class="text-danger">{{ $errors->first('talk_about') }}</small>
-                                        @endif
-                                    </div>
-                                    <hr>
-                                    <div>
-                                        <label for="title">زكاة الإبل</label>
-                                        {!! Form::textarea('zakah', $row->zakah , ['class'=>'form-control summernote']) !!}
-                                        @if ($errors->has('zakah'))
-                                            <small class="text-danger">{{ $errors->first('zakah') }}</small>
-                                        @endif
-                                    </div>
-                                    <hr>
-                                    <div>
-                                        <label for="title">فعاليات ومهرجانات</label>
-                                        {!! Form::textarea('festival', $row->festival , ['class'=>'form-control summernote']) !!}
-                                        @if ($errors->has('festival'))
-                                            <small class="text-danger">{{ $errors->first('festival') }}</small>
-                                        @endif
-                                    </div>
-                                    <hr>
+{{--                                    <div>--}}
+{{--                                        <label for="title">الشروط والاحكام</label>--}}
+{{--                                        {!! Form::textarea('licence', \App\Models\Page::where('name','licence')->value('content') , ['class'=>'form-control']) !!}--}}
+{{--                                        @if ($errors->has('licence'))--}}
+{{--                                            <small class="text-danger">{{ $errors->first('licence') }}</small>--}}
+{{--                                        @endif--}}
+{{--                                    </div>--}}
+{{--                                    <hr>--}}
+{{--                                    <div>--}}
+{{--                                        <label for="title">من نحن</label>--}}
+{{--                                        {!! Form::textarea('about', \App\Models\Page::where('name','about')->value('content') , ['class'=>'form-control']) !!}--}}
+{{--                                        @if ($errors->has('about'))--}}
+{{--                                            <small class="text-danger">{{ $errors->first('about') }}</small>--}}
+{{--                                        @endif--}}
+{{--                                    </div>--}}
+{{--                                    <hr>--}}
+{{--                                    <div>--}}
+{{--                                        <label for="title"> السلع الممنوعة</label>--}}
+{{--                                        {!! Form::textarea('block', $row->block , ['class'=>'form-control']) !!}--}}
+{{--                                        @if ($errors->has('block'))--}}
+{{--                                            <small class="text-danger">{{ $errors->first('block') }}</small>--}}
+{{--                                        @endif--}}
+{{--                                    </div>--}}
+{{--                                    <hr>--}}
+{{--                                    <div>--}}
+{{--                                        <label for="title">عمولة التطبيق</label>--}}
+{{--                                        {!! Form::textarea('percent', \App\Models\Page::where('name','percent')->value('content') , ['class'=>'form-control']) !!}--}}
+{{--                                        @if ($errors->has('percent'))--}}
+{{--                                            <small class="text-danger">{{ $errors->first('percent') }}</small>--}}
+{{--                                        @endif--}}
+{{--                                    </div>--}}
+{{--                                    <hr>--}}
+{{--                                    <div>--}}
+{{--                                        <label for="title">الابل فى القرآن</label>--}}
+{{--                                        {!! Form::textarea('quran', \App\Models\Page::where('name','quran')->value('content') , ['class'=>'form-control']) !!}--}}
+{{--                                        @if ($errors->has('quran'))--}}
+{{--                                            <small class="text-danger">{{ $errors->first('quran') }}</small>--}}
+{{--                                        @endif--}}
+{{--                                    </div>--}}
+{{--                                    <hr>--}}
+{{--                                    <div>--}}
+{{--                                        <label for="title">الابل فى الحديث</label>--}}
+{{--                                        {!! Form::textarea('hadeth', \App\Models\Page::where('name','hadeth')->value('content') , ['class'=>'form-control summernote']) !!}--}}
+{{--                                        @if ($errors->has('hadeth'))--}}
+{{--                                            <small class="text-danger">{{ $errors->first('hadeth') }}</small>--}}
+{{--                                        @endif--}}
+{{--                                    </div>--}}
+{{--                                    <hr>--}}
+{{--                                    <div>--}}
+{{--                                        <label for="title">قيل فى الإبل</label>--}}
+{{--                                        {!! Form::textarea('talk_about', \App\Models\Page::where('name','talk_about')->value('content') , ['class'=>'form-control summernote']) !!}--}}
+{{--                                        @if ($errors->has('talk_about'))--}}
+{{--                                            <small class="text-danger">{{ $errors->first('talk_about') }}</small>--}}
+{{--                                        @endif--}}
+{{--                                    </div>--}}
+{{--                                    <hr>--}}
+{{--                                    <div>--}}
+{{--                                        <label for="title">زكاة الإبل</label>--}}
+{{--                                        {!! Form::textarea('zakah', $row->zakah , ['class'=>'form-control summernote']) !!}--}}
+{{--                                        @if ($errors->has('zakah'))--}}
+{{--                                            <small class="text-danger">{{ $errors->first('zakah') }}</small>--}}
+{{--                                        @endif--}}
+{{--                                    </div>--}}
+{{--                                    <hr>--}}
+{{--                                    <div>--}}
+{{--                                        <label for="title">فعاليات ومهرجانات</label>--}}
+{{--                                        {!! Form::textarea('festival', $row->festival , ['class'=>'form-control summernote']) !!}--}}
+{{--                                        @if ($errors->has('festival'))--}}
+{{--                                            <small class="text-danger">{{ $errors->first('festival') }}</small>--}}
+{{--                                        @endif--}}
+{{--                                    </div>--}}
+{{--                                    <hr>--}}
 
-                                    <div>
-                                        <label for="title">نص تواصل معنا</label>
-                                        {!! Form::textarea('contact', $row->contact , ['class'=>'form-control summernote']) !!}
-                                        @if ($errors->has('contact'))
-                                            <small class="text-danger">{{ $errors->first('contact') }}</small>
-                                        @endif
-                                    </div>
+{{--                                    <div>--}}
+{{--                                        <label for="title">نص تواصل معنا</label>--}}
+{{--                                        {!! Form::textarea('contact', \App\Models\Page::where('name','contact')->value('content') , ['class'=>'form-control summernote']) !!}--}}
+{{--                                        @if ($errors->has('contact'))--}}
+{{--                                            <small class="text-danger">{{ $errors->first('contact') }}</small>--}}
+{{--                                        @endif--}}
+{{--                                    </div>--}}
                                     <hr>
                                     <div>
                                         <label>رقم الهاتف </label>

@@ -7,15 +7,16 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>سنــــــــــــــام</title>
     <!-- Styles -->
- <style>
-@import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@700&display=swap');
-</style>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@700&>
+    </style>
 </head>
 <body>
-<div id="app" style="font-family: 'Tajawal', sans-serif;   direction: rtl; padding: 1em">
+        <img src="../../../web/images/hadeth.png" style="width: 150px; display:block; margin:auto;">
+<div id="app" style="font-family: 'Tajawal', sans-serif;   direction: rtl; padd">
     {!!$content!!}
 </div>
 
-<!-- Scripts -->
 </body>
+
 </html>

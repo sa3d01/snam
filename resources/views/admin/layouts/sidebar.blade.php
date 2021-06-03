@@ -12,6 +12,26 @@
                 <li class="has_sub">
                     <a href="{{route('setting.get_setting')}}" class="waves-effect"><i class="md md-settings"></i><span> الإعدادات </span></a>
                 </li>
+
+                <li class="has_sub">
+                    <a href="javascript:void(0);" class="waves-effect"><i
+                            class="fa fa-pagelines"></i><span>الصفحات التعريفية </span></a>
+                    <ul class="list-unstyled">
+                        <li><a href="{{route('edit_page','about')}}">عن التطبيق</a></li>
+                        <li><a href="{{route('edit_page','licence')}}">الشروط والأحكام</a></li>
+                        <li><a href="{{route('edit_page','contact')}}">تواصل معنا</a></li>
+                        <li><a href="{{route('edit_page','block')}}">السلع الممنوعة</a></li>
+                        <li><a href="{{route('edit_page','percent')}}">عمولة التطبيق</a></li>
+                        <li><a href="{{route('edit_page','quran')}}">الإبل فى القران</a></li>
+                        <li><a href="{{route('edit_page','hadeth')}}">الإبل فى الحديث</a></li>
+                        <li><a href="{{route('edit_page','zakah')}}">زكاة الإبل</a></li>
+                        <li><a href="{{route('edit_page','talk_about')}}">قيل فى الإبل</a></li>
+                        <li><a href="{{route('edit_page','festival')}}">فعاليات ومهرجانات</a></li>
+                        <li><a href="{{route('edit_page','news')}}">الأخبار</a></li>
+                        <li><a href="{{route('edit_page','wsoom')}}">وسوم</a></li>
+                    </ul>
+                </li>
+
                 <li class="has_sub">
                     <a href="javascript:void(0);" class="waves-effect"><i class="ti-alert"></i><span> الإشعارات الجماعية </span></a>
                     <ul class="list-unstyled">
@@ -20,7 +40,7 @@
                 </li>
                 <li class="has_sub">
                     <a href="javascript:void(0);" class="waves-effect"><i
-                                class="fa fa-user"></i><span>ادارة الصﻻحيات  </span></a>
+                                class="fa fa-user"></i><span>ادارة الصلاحيات  </span></a>
                     <ul class="list-unstyled">
                         <li><a href="{{route('roles.create')}}">إضافة صلاحية جديده</a></li>
                         <li><a href="{{route('roles.index')}}">عرض الكل</a></li>
@@ -37,10 +57,10 @@
                 <li class="text-muted menu-title"></li>
                 <li class="has_sub">
                     <a href="javascript:void(0);" class="waves-effect"><i
-                                class="fa fa-user"></i><span>ادارة العمﻻء  </span></a>
+                                class="fa fa-user"></i><span>ادارة العملاء  </span></a>
                     <ul class="list-unstyled">
-                        <li><a href="{{route('user.active_users')}}">العمﻻء المفعلين</a></li>
-                        <li><a href="{{route('user.not_active_users')}}">العمﻻء المحظورين</a></li>
+                        <li><a href="{{route('user.active_users')}}">العملاء المفعلين</a></li>
+                        <li><a href="{{route('user.not_active_users')}}">العملاء المحظورين</a></li>
                         <li><a href="{{route('notification.create')}}">اشعارات جماعية</a></li>
                         <li><a href="{{route('user.create')}}">اضافة عميل</a></li>
                     </ul>
@@ -85,7 +105,7 @@
                     </ul>
                 </li>
                 <li class="has_sub">
-                    <a href="javascript:void(0);" class="waves-effect"><i class="md md-computer"></i><span> الإعﻻنات  </span></a>
+                    <a href="javascript:void(0);" class="waves-effect"><i class="md md-computer"></i><span> الإعلانات  </span></a>
                     <ul class="list-unstyled">
                         <li><a href="{{route('ad.create')}}">إضافة</a></li>
                         <li><a href="{{route('ad.index')}}">عرض </a></li>

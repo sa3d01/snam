@@ -22,6 +22,29 @@
                         {!! Form::open(['method'=>'post', 'files'=>true, 'enctype' => 'multipart/form-data', 'route'=>[$route.'.store'], 'class' => 'form-row-seperated add_ads_form']) !!}
                         <div class="row">
                             <div class="col-md-12">
+                                <div class="form-group" >
+                                    <div class="col-xs-12">
+                                        {{ Form::select('parent_category_id', $parent_category_array , null, array('class' => 'form-control','style'=>"margin-bottom: 10px",'id'=>'parent_category_id')) }}
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-xs-12">
+                                        <select name="child_category_id" class="form-control" style="margin-bottom: 10px" id="child_category_id">
+                                            @foreach($child_category_array as $child)
+                                                <option value="{{$child->id}}">{{$child->name}}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-xs-12">
+                                        <select name="sub_child_category_id" class="form-control" style="margin-bottom: 10px" id="sub_child_category_id">
+                                            @foreach($sub_child_categories_array as $sub_child)
+                                                <option value="{{$sub_child->id}}">{{$sub_child->name}}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
                                 @foreach($create_fields as $labels => $fields)
                                     @php $s1=$fields; $s2="id" @endphp
                                     @if($fields=='mobile' || $fields=='message')
@@ -56,7 +79,7 @@
                                 @endforeach
                                     <div class="form-group">
                                         <div class="fileupload btn btn-purple waves-effect waves-light">
-                                            <span><i class="ion-upload m-r-12"></i>صور الإعﻻن</span>
+                                            <span><i class="ion-upload m-r-12"></i>صور الإعلان</span>
                                             <input class="upload" type="file" accept="image/*" name="images[]" multiple />
                                             @if ($errors->has('images'))
                                                 <small class="text-danger">{{ $errors->first('images') }}</small>
@@ -81,6 +104,51 @@
     </div>
 @endsection
 @section('script')
+    <script>
+        $(document).ready(function() {
+            let host= "https://snam.sa/";
+            $('#parent_category_id').on('change', function (e) {
+                e.preventDefault();
+                var id = $(this).val();
+                $.ajax({
+                    type: "GET",
+                    url:host+'/admin/get_category_childs/'+id,
+                    dataType: 'json',
+                    success: function( data ) {
+                        $('#child_category_id').empty();
+                        var res = '<div class="col-xs-12">'+
+                            '<select name="child_category_id" class="form-control" style="margin-bottom: 10px" id="child_category_id">';
+                        $.each (data, function (key, value)
+                        {
+                            res +='<option value="'+value.id+'">'+value.name+'</option>';
+                        });
+                        res +='</select></div>';
+                        $('#child_category_id').html(res);
+                    }
+                });
+            });
+            $('#child_category_id').on('change', function (e) {
+                e.preventDefault();
+                var id = $(this).val();
+                $.ajax({
+                    type: "GET",
+                    url:host+'/admin/get_category_childs/'+id,
+                    dataType: 'json',
+                    success: function( data ) {
+                        $('#sub_child_category_id').empty();
+                        var res = '<div class="col-xs-12">'+
+                            '<select name="sub_child_category_id" class="form-control" style="margin-bottom: 10px" id="sub_child_category_id">';
+                        $.each (data, function (key, value)
+                        {
+                            res +='<option value="'+value.id+'">'+value.name+'</option>';
+                        });
+                        res +='</select></div>';
+                        $('#sub_child_category_id').html(res);
+                    }
+                });
+            });
+        });
+    </script>
     <script>
         $(document).ready(function() {
             $( "#start_date" ).datepicker();

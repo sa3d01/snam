@@ -14,38 +14,34 @@
                     </b>
                     <hr>
                 </h4>
-                {!! Form::model($row, ['method'=>'patch','name'=>'update', 'files'=>true, 'route'=>[$route.'.update', $row->id], 'class' => 'form-horizontal form-row-seperated']) !!}
-                    {!! Form::hidden('id', $row->id) !!}
+                {!! Form::model($page, ['method'=>'post','name'=>'update', 'files'=>true, 'route'=>['page.update', $page->id], 'class' => 'form-horizontal form-row-seperated']) !!}
+                    {!! Form::hidden('id', $page->id) !!}
                     <div class="row">
                         <div class="col-md-12">
-                            @foreach($languages as $language)
-                                <div>
-                                    <label for="title">الاسم بـ{{$language->name}}</label>
-                                    @php $name=\App\Models\PageDescription::where(['language_id'=>$language->id,'page_id'=>$row->id])->value('name'); @endphp
-                                    {!! Form::text('name_'.$language->label, $name, ['class'=>'form-control','required']) !!}
-                                    @if ($errors->has('name_'.$language->label))
-                                        <small class="text-danger">{{ $errors->first('name_'.$language->label) }}</small>
-                                    @endif
-                                </div>
-                            @endforeach
-                            @foreach($languages as $language)
-                                <div>
-                                    <label for="title">عن الموقع بـ{{$language->name}}</label>
-                                    @php $description=\App\Models\PageDescription::where(['language_id'=>$language->id,'page_id'=>$row->id])->value('description'); @endphp
-                                    {!! Form::textarea('description_'.$language->label, $description , ['class'=>'form-control summernote']) !!}
-                                    @if ($errors->has('description_'.$language->label))
-                                        <small class="text-danger">{{ $errors->first('description_'.$language->label) }}</small>
-                                    @endif
-                                </div>
-                            @endforeach
-
                             <div class="form-group">
-                                <label class="control-label">الحالة</label>
-                                {{ Form::select('status', $status, $row->status, array('class' => 'form-control select2 select2-hidden-accessible','tabindex'=>-1,'aria-hidden'=>true, 'required')) }}
-                                @if ($errors->has('status'))
-                                    <small class="text-danger">{{ $errors->first('status') }}</small>
-                                @endif
+                                <label for="title">العنوان </label>
+                                {!! Form::text('title', $page->title, ['class'=>'form-control','required']) !!}
                             </div>
+                            <div class="form-group">
+                                <label for="content">النص</label>
+                                {!! Form::textarea('content', $page->content , ['class'=>'form-control']) !!}
+                            </div>
+                            <div class="form-group">
+                                <div class="fileupload btn btn-purple waves-effect waves-light">
+                                    <span><i class="ion-upload m-r-12"></i>الصور المرفقة</span>
+                                    <input id="uploadFile" class="upload" type="file" accept="image/*" name="images[]" multiple />
+                                    <br/>
+                                    <div class="form-group" id="image_preview">
+                                        @if($page->images!=null)
+                                            @php($images=json_decode($page->images))
+                                            @foreach($images as $image)
+                                                <img style='pointer-events: none;max-height: 100px;max-width: 100px;height: 100px;border-radius: 10px;margin: 5px;' src='{{$image}}'>
+                                            @endforeach
+                                        @endif
+                                    </div>
+                                </div>
+                            </div>
+
                         </div>
                     </div>
                     <div class="form-group">
@@ -63,6 +59,16 @@
 </div>
 @endsection
 @section('script')
+    <script>
+        $("#uploadFile").change(function(){
+            $('#image_preview').html("");
+            var total_file=document.getElementById("uploadFile").files.length;
+            for(var i=0;i<total_file;i++)
+            {
+                $('#image_preview').append("<img style='pointer-events: none;max-height: 100px;max-width: 100px;height: 100px;border-radius: 10px;margin: 5px;' src='"+URL.createObjectURL(event.target.files[i])+"'>");
+            }
+        });
+    </script>
     <script src="{{asset('panel/assets/plugins/summernote/summernote.min.js')}}"></script>
     <script>
         jQuery(document).ready(function(){

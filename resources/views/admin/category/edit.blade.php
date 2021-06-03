@@ -18,7 +18,16 @@
                         {!! Form::hidden('id', $row->id) !!}
                         <div class="row">
                             <div class="col-md-12">
-                                @foreach($index_fields as $labels => $fields)
+                                <div class="form-group" >
+                                    <label for="title">تابع الى</label>
+                                    <div class="col-xs-12">
+                                        {{ Form::select('parent_category_id', $parent_category, null, array('class' => 'form-control','style'=>"margin-bottom: 10px",'id'=>'parent_category_id')) }}
+                                    </div>
+                                </div>
+                                <div class="form-group" id="child_category_id">
+
+                                </div>
+                                @foreach($create_fields as $labels => $fields)
                                     @php $s1=$fields; $s2="id"; @endphp
                                     @if($fields=='image')
                                         <div class="white-box">
@@ -61,6 +70,32 @@
     </div>
 @endsection
 @section('script')
+    <script>
+        $(document).ready(function() {
+            let host= "https://snam.sa/";
+            $('#parent_category_id').on('change', function (e) {
+                e.preventDefault();
+                var id = $(this).val();
+                $.ajax({
+                    type: "GET",
+                    url:host+'/admin/get_category_childs/'+id,
+                    dataType: 'json',
+                    success: function( data ) {
+                        $('#child_category_id').empty();
+                        var res = '<div class="col-xs-12">'+
+                            '<select name="child_category_id" class="form-control" style="margin-bottom: 10px">'+
+                            '<option value="">بدون</option>';
+                        $.each (data, function (key, value)
+                        {
+                            res +='<option value="'+value.id+'">'+value.name+'</option>';
+                        });
+                        res +='</select></div>';
+                        $('#child_category_id').html(res);
+                    }
+                });
+            });
+        });
+    </script>
     <script src="{{asset('panel/assets/plugins/summernote/summernote.min.js')}}"></script>
 
 

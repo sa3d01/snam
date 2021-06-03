@@ -1,7 +1,3 @@
-
-{{--{!! QrCode::size(500)->generate('Make me into a QrCode!') !!}--}}
-
-
 <div class="row">
     <div class="col-lg-3 col-sm-6">
         <div class="widget-panel widget-style-2 bg-white">
@@ -44,14 +40,14 @@
         <div class="widget-panel widget-style-2 bg-white">
             <i class="md md-subtitles text-primary"></i>
             <h2 class="m-0 text-dark counter font-600">{{$active_ad_count}}</h2>
-            <div class="text-muted m-t-5"> العﻻنات الجارية</div>
+            <div class="text-muted m-t-5"> الإعلانات الجارية</div>
         </div>
     </div>
     <div class="col-lg-3 col-sm-6">
         <div class="widget-panel widget-style-2 bg-white">
             <i class="md md-add-box text-primary"></i>
             <h2 class="m-0 text-dark counter font-600">{{$not_active_ad_count}}</h2>
-            <div class="text-muted m-t-5">الاعلانات المنتهية</div>
+            <div class="text-muted m-t-5">الإعلانات المنتهية</div>
         </div>
     </div>
 

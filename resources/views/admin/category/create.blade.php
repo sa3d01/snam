@@ -26,12 +26,21 @@
                         {!! Form::hidden('add_by', Auth::user()->id) !!}
                         <div class="row">
                             <div class="col-md-12">
-                                @foreach($index_fields as $labels => $fields)
+                                <div class="form-group" >
+                                    <label for="title">تابع الى</label>
+                                    <div class="col-xs-12">
+                                        {{ Form::select('parent_category_id', $parent_category, null, array('class' => 'form-control','style'=>"margin-bottom: 10px",'id'=>'parent_category_id')) }}
+                                    </div>
+                                </div>
+                                <div class="form-group" id="child_category_id">
+
+                                </div>
+                                @foreach($create_fields as $labels => $fields)
                                     @php $s1=$fields; $s2="id"; @endphp
                                     @if($fields=='image' || $fields=='logo')
                                         <div class="white-box">
                                             <label for="input-file-now-custom-1">{{ $labels }}</label>
-                                            <input name="{{$fields}}" type="file" id="input-file-now-custom-1" class="dropify" data-default-file="{{asset('images/logo/default.png')}}"/>
+                                            <input name="{{$fields}}" type="file" id="input-file-now-custom-1" class="dropify" data-default-file="{{asset('images/category/mSRpmJx6Xv.JPEG')}}"/>
                                             @if ($errors->has($fields))
                                                 <small class="text-danger">{{ $errors->first($fields) }}</small>
                                             @endif
@@ -51,20 +60,6 @@
                                         <br>
                                     @endif
                                 @endforeach
-
-                                @if($language==2)
-                                    @foreach($json_fields as $label=>$value)
-                                        @foreach($languages as $lang)
-                                                <div class="form-group{{ $errors->has($fields) ? ' has-error' : '' }}">
-                                                    <label for="title">{{ $label .' '.'بـ' .$lang->name }}</label>
-                                                    {!! Form::text($value.'_'.$lang->label, null, ['class'=>'form-control']) !!}
-                                                </div>
-                                                <br>
-                                        @endforeach
-                                    @endforeach
-                                @endif
-
-
                                     <div class="form-group">
                                         <div class="control-label col-md-push-1">
                                             <button type="submit" class="update_button btn btn-success btn-rounded waves-effect waves-light">
@@ -83,6 +78,32 @@
     </div>
 @endsection
 @section('script')
+    <script>
+        $(document).ready(function() {
+            let host= "https://snam.sa/";
+            $('#parent_category_id').on('change', function (e) {
+                e.preventDefault();
+                var id = $(this).val();
+                $.ajax({
+                    type: "GET",
+                    url:host+'/admin/get_category_childs/'+id,
+                    dataType: 'json',
+                    success: function( data ) {
+                        $('#child_category_id').empty();
+                        var res = '<div class="col-xs-12">'+
+                            '<select name="child_category_id" class="form-control" style="margin-bottom: 10px">'+
+                            '<option value="">بدون</option>';
+                        $.each (data, function (key, value)
+                        {
+                            res +='<option value="'+value.id+'">'+value.name+'</option>';
+                        });
+                        res +='</select></div>';
+                        $('#child_category_id').html(res);
+                    }
+                });
+            });
+        });
+    </script>
     <script>
         $(document).ready(function() {
             // Basic
